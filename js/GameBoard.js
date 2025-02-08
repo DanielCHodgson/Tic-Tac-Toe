@@ -1,4 +1,4 @@
-const GameBoard = (function () {
+const Gameboard = (function () {
 
 
 
@@ -8,4 +8,4 @@ const GameBoard = (function () {
 
 })();
 
-window.GameBoard = GameBoard;
+window.Gameboard = Gameboard;
