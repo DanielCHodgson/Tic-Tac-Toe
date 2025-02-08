@@ -2,8 +2,8 @@ const Cell = (function () {
 
     let value = " ";
 
-    const addMarker = (player) => {
-        value = player.marker;
+    const addMarker = (marker) => {
+        value = marker;
     }
 
     const getValue = () => value;
@@ -14,4 +14,4 @@ const Cell = (function () {
     }
 });
 
-window.Cell = Cell;
+export default Cell;
