@@ -12,6 +12,8 @@ const Gameboard = (function () {
         }
     }
 
+    const getBoard = () => board;
+
     const printBoard = () => {
         const boardWithCells = board.map(row => row.map(cell => cell.getValue()));
         console.log(boardWithCells);
@@ -34,6 +36,7 @@ const Gameboard = (function () {
     return {
         printBoard,
         getCell,
+        getBoard,
         addMarker
     };
 

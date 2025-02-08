@@ -1,0 +1,39 @@
+:root {
+    box-sizing: border-box;
+}
+
+.wrapper {
+    width: 510px;
+    height: 100vh;
+    margin: auto;
+}
+
+.board {
+    margin: auto;
+    display: grid;
+    height: 500px;
+    width: 500px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 1px;
+    padding: 2px;
+    background-color: #000000;
+  }
+  
+  .cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 2rem;
+    background: #40f3e4da;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    opacity: 0.9;
+  }
+
+  .cell:active {
+
+    opacity: 1;
+  }
