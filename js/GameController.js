@@ -37,38 +37,16 @@ const GameController = (function () {
 
     function didWinGame(player) {
         let size = board.length;
-
+    
         for (let i = 0; i < size; i++) {
-            let rowWin = true;
-            let colWin = true;
-    
-            for (let j = 0; j < size; j++) {
-                if (board[i][j].getValue() !== player.marker) {
-                    rowWin = false;
-                }
-                if (board[j][i].getValue() !== player.marker) {
-                    colWin = false;
-                }
-            }
-    
-            if (rowWin || colWin) {
+            if (board[i].every(cell => cell.getValue() === player.marker) || 
+                board.map(row => row[i]).every(cell => cell.getValue() === player.marker)) {
                 return true;
             }
         }
     
-        let diagWin1 = true;
-        let diagWin2 = true;
-    
-        for (let i = 0; i < size; i++) {
-            if (board[i][i].getValue() !== player.marker) {
-                diagWin1 = false;
-            }
-            if (board[i][size - 1 - i].getValue() !== player.marker) {
-                diagWin2 = false;
-            }
-        }
-        
-        if (diagWin1 || diagWin2) {
+        if (board.every((_, i) => board[i][i].getValue() === player.marker) || 
+            board.every((_, i) => board[i][size - 1 - i].getValue() === player.marker)) {
             return true;
         }
     
