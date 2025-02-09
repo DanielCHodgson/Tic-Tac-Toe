@@ -7,7 +7,6 @@ const Cell = (function () {
     }
 
     const getValue = () => value;
-
     const isOccupied = () => value !== null;
 
     return {

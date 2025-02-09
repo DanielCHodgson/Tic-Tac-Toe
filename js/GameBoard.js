@@ -36,7 +36,6 @@ const Gameboard = (function () {
         getBoard,
         addMarker,
     };
-
 });
 
 export default Gameboard;

@@ -7,35 +7,34 @@ const GameController = (function () {
 
     const playerOne = { name: "playerOne", marker: "O" };
     const playerTwo = { name: "playerTwo", marker: "X" };
-
     const players = [playerOne, playerTwo];
-
     let activePlayer = players[0];
+    let winningPlayer = null;
 
     const getActivePlayer = () => activePlayer;
-
     const getGameBoard = () => gameBoard;
+    const getWinningPlayer= () => winningPlayer;
 
     const switchActivePlayer = () => {
         activePlayer === players[0] ? activePlayer = players[1] : activePlayer = players[0];
     };
 
-    const playRound = (row, col) => {
-
-        const cell = gameBoard.getCell(row, col);
+    const playRound = (cell, screenController) => {
 
         const activePlayer = getActivePlayer();
 
         if (!cell.isOccupied()) {
             gameBoard.addMarker(cell, activePlayer.marker);
             // /gameBoard.printBoard();
-            if (wonGame(activePlayer)) { alert(activePlayer.name + " won!") }
+            if (didWinGame(activePlayer)) {
+                winningPlayer = activePlayer;
+                return;
+            }
             switchActivePlayer();
         } else alert("Square occupied, choose another!")
     }
 
-
-    function wonGame(player) {
+    function didWinGame(player) {
         let size = board.length;
 
         for (let i = 0; i < size; i++) {
@@ -78,7 +77,8 @@ const GameController = (function () {
     return {
         playRound,
         getActivePlayer,
-        getGameBoard
+        getGameBoard,
+        getWinningPlayer
     }
 });
 

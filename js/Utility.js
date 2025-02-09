@@ -1,6 +1,5 @@
 const Utility = (function () {
 
-
     function twoDToIndex(row, col, width) {
         return row * width + col;
     }
@@ -11,14 +10,10 @@ const Utility = (function () {
         return [row, col];
     }
 
-
-
     return {
         twoDToIndex,
         indexToTwoD
     }
-
-
 });
 
 export default Utility;
