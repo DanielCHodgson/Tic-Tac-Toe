@@ -1,4 +1,4 @@
-const Cell = (function (x, y) {
+const Cell = (function () {
 
     let value = null;
 
