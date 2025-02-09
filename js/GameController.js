@@ -6,7 +6,7 @@ const GameController = (function () {
     const gameBoard = Gameboard;
     const board = gameBoard.getBoard();
 
-    const boardStates = [];
+    let boardStates = [];
 
     const playerOne = { name: "playerOne", marker: "O" };
     const playerTwo = { name: "playerTwo", marker: "X" };
@@ -30,10 +30,9 @@ const GameController = (function () {
 
             const boardCopy = board.map(row => row.map(cell => Cell(cell.getValue())));
             boardStates.push(boardCopy);
-
             gameBoard.addMarker(cell, activePlayer.marker);
 
-            if (didWinGame(activePlayer)) {
+            if (isGameWon(activePlayer)) {
                 winningPlayer = activePlayer;
                 return;
             }
@@ -41,7 +40,7 @@ const GameController = (function () {
         } else alert("Square occupied, choose another!")
     }
 
-    function didWinGame(player) {
+    function isGameWon(player) {
         let size = board.length;
 
         for (let i = 0; i < size; i++) {
@@ -59,10 +58,16 @@ const GameController = (function () {
         return false;
     }
 
+    function reset() {
+
+        boardStates = [];
+    }
 
     function undoRound() {
 
         if (boardStates.length > 0) {
+
+            boardStates.forEach(b => gameBoard.printBoard(b))
 
             const prevBoard = boardStates.pop();
             gameBoard.setBoard(prevBoard);
@@ -73,6 +78,7 @@ const GameController = (function () {
     return {
         playRound,
         undoRound,
+        reset,
         getActivePlayer,
         getPlayers,
         getGameBoard,
