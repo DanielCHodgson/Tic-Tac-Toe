@@ -2,7 +2,7 @@ import Utility from "./Utility.js"
 
 const ScreenController = (function (gameController) {
 
-  const playerTurnDiv = document.querySelector('.turn');
+  const headerText = document.querySelector('.turn');
   const boardDiv = document.querySelector('.board');
   const gameBoard = gameController.getGameBoard();
   const board = gameBoard.getBoard();
@@ -12,7 +12,7 @@ const ScreenController = (function (gameController) {
 
     boardDiv.textContent = "";
     const activePlayer = gameController.getActivePlayer();
-    playerTurnDiv.textContent = `${activePlayer.name}'s turn...`
+    headerText.textContent = `${activePlayer.name}'s turn...`
 
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board.length; j++) {
@@ -46,7 +46,7 @@ const ScreenController = (function (gameController) {
   }
 
   function displayWin(player) {
-    alert(player.name + "WON!");
+   headerText.textContent = `${player.name} won!`
   }
 
   function handleBoardClick(event) {

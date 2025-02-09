@@ -20,7 +20,7 @@ const GameController = (function () {
         activePlayer === players[0] ? activePlayer = players[1] : activePlayer = players[0];
     };
 
-    const playRound = (cell, screenController) => {
+    const playRound = (cell) => {
 
         const activePlayer = getActivePlayer();
 
