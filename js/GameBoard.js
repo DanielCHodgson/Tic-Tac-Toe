@@ -8,7 +8,7 @@ const Gameboard = (function () {
     for (let i = 0; i < rows; i++) {
         board[i] = [];
         for (let j = 0; j < cols; j++) {
-            board[i].push(Cell());
+            board[i].push(Cell(i, j));
         }
     }
 
@@ -27,9 +27,7 @@ const Gameboard = (function () {
     }
 
     const addMarker = (cell, marker) => {
-        if (cell.getValue() === null) {
-            cell.addMarker(marker);
-        } else console.log("Squared already occupied!")
+        cell.addMarker(marker);
     }
 
     return {
