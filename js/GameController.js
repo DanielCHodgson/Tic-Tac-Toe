@@ -12,6 +12,7 @@ const GameController = (function () {
     let winningPlayer = null;
 
     const getActivePlayer = () => activePlayer;
+    const getPlayers = () => players;
     const getGameBoard = () => gameBoard;
     const getWinningPlayer= () => winningPlayer;
 
@@ -77,6 +78,7 @@ const GameController = (function () {
     return {
         playRound,
         getActivePlayer,
+        getPlayers,
         getGameBoard,
         getWinningPlayer
     }
