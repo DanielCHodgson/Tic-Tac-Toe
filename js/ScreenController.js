@@ -4,15 +4,30 @@ const ScreenController = (function (gameController) {
 
   const headerText = document.querySelector('.turn');
   const boardDiv = document.querySelector('.board');
+  const undoBtn = document.querySelector('.undo');
   const gameBoard = gameController.getGameBoard();
   const board = gameBoard.getBoard();
   const utility = Utility();
 
   const updateScreen = () => {
 
+    setTurnName();
+    updateBoardGrid();
+
+    if (gameController.getWinningPlayer() != null) {
+      displayWin(gameController.getWinningPlayer());
+    }
+  }
+
+
+  function setTurnName() {
     boardDiv.textContent = "";
     const activePlayer = gameController.getActivePlayer();
     headerText.textContent = `${activePlayer.name}'s turn...`
+  }
+
+
+  function updateBoardGrid() {
 
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board.length; j++) {
@@ -24,10 +39,6 @@ const ScreenController = (function (gameController) {
         cellButton.appendChild(activePlayerIcon(cell.getValue()));
         boardDiv.appendChild(cellButton);
       }
-    }
-
-    if (gameController.getWinningPlayer() != null) {
-      displayWin(gameController.getWinningPlayer());
     }
   }
 
@@ -46,7 +57,7 @@ const ScreenController = (function (gameController) {
   }
 
   function displayWin(player) {
-   headerText.textContent = `${player.name} won!`
+    headerText.textContent = `${player.name} won!`
   }
 
   function handleBoardClick(event) {
@@ -59,8 +70,14 @@ const ScreenController = (function (gameController) {
     updateScreen();
   }
 
+  function handleUndoClick() {
+    gameController.undoRound();
+    updateScreen();
+  }
+
   function bindEvents() {
     boardDiv.addEventListener("click", handleBoardClick);
+    undoBtn.addEventListener("click", handleUndoClick);
   }
 
   bindEvents()

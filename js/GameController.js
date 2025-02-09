@@ -1,9 +1,12 @@
 import Gameboard from "./GameBoard.js";
+import Cell from "./Cell.js";
 
 const GameController = (function () {
 
-    const gameBoard = Gameboard();
+    const gameBoard = Gameboard;
     const board = gameBoard.getBoard();
+
+    const boardStates = [];
 
     const playerOne = { name: "playerOne", marker: "O" };
     const playerTwo = { name: "playerTwo", marker: "X" };
@@ -14,7 +17,7 @@ const GameController = (function () {
     const getActivePlayer = () => activePlayer;
     const getPlayers = () => players;
     const getGameBoard = () => gameBoard;
-    const getWinningPlayer= () => winningPlayer;
+    const getWinningPlayer = () => winningPlayer;
 
     const switchActivePlayer = () => {
         activePlayer === players[0] ? activePlayer = players[1] : activePlayer = players[0];
@@ -23,10 +26,13 @@ const GameController = (function () {
     const playRound = (cell) => {
 
         const activePlayer = getActivePlayer();
-
         if (!cell.isOccupied()) {
+
+            const boardCopy = board.map(row => row.map(cell => Cell(cell.getValue())));
+            boardStates.push(boardCopy);
+
             gameBoard.addMarker(cell, activePlayer.marker);
-            // /gameBoard.printBoard();
+
             if (didWinGame(activePlayer)) {
                 winningPlayer = activePlayer;
                 return;
@@ -37,29 +43,41 @@ const GameController = (function () {
 
     function didWinGame(player) {
         let size = board.length;
-    
+
         for (let i = 0; i < size; i++) {
-            if (board[i].every(cell => cell.getValue() === player.marker) || 
+            if (board[i].every(cell => cell.getValue() === player.marker) ||
                 board.map(row => row[i]).every(cell => cell.getValue() === player.marker)) {
                 return true;
             }
         }
-    
-        if (board.every((_, i) => board[i][i].getValue() === player.marker) || 
+
+        if (board.every((_, i) => board[i][i].getValue() === player.marker) ||
             board.every((_, i) => board[i][size - 1 - i].getValue() === player.marker)) {
             return true;
         }
-    
+
         return false;
+    }
+
+
+    function undoRound() {
+
+        if (boardStates.length > 0) {
+
+            const prevBoard = boardStates.pop();
+            gameBoard.setBoard(prevBoard);
+            switchActivePlayer();
+        }
     }
 
     return {
         playRound,
+        undoRound,
         getActivePlayer,
         getPlayers,
         getGameBoard,
-        getWinningPlayer
+        getWinningPlayer,
     }
-});
+})();
 
 export default GameController;

@@ -3,18 +3,19 @@ import Cell from "./Cell.js";
 const Gameboard = (function () {
 
     const rows = 3, cols = 3;
-    const board = [];
+    let board = [];
 
     for (let i = 0; i < rows; i++) {
         board[i] = [];
         for (let j = 0; j < cols; j++) {
-            board[i].push(Cell(i, j));
+            board[i].push(Cell(null));
         }
     }
 
     const getBoard = () => board;
+    const setBoard = (newBoard) => board = newBoard;
 
-    const printBoard = () => {
+    const printBoard = (board) => {
         const boardWithCells = board.map(row => row.map(cell => cell.getValue()));
         console.log(boardWithCells);
     }
@@ -34,8 +35,9 @@ const Gameboard = (function () {
         printBoard,
         getCell,
         getBoard,
+        setBoard,
         addMarker,
     };
-});
+})();
 
 export default Gameboard;

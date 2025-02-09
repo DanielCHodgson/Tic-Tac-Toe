@@ -1,6 +1,4 @@
-const Cell = (function () {
-
-    let value = null;
+const Cell = (function (value) {
 
     const addMarker = (marker) => {
         value = marker;
