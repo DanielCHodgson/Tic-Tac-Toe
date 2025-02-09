@@ -13,10 +13,10 @@ const GameController = (function () {
 
     const getActivePlayer = () => activePlayer;
 
-    const getBoard =() => gameBoard.getBoard();
+    const getGameBoard =() => gameBoard;
 
     const switchActivePlayer = () => {
-        activePlayer = players[0] ? players[1] : players[0];
+        activePlayer === players[0] ? activePlayer = players[1] : activePlayer = players[0];
     };
 
     const printNewRound = () => {
@@ -29,9 +29,7 @@ const GameController = (function () {
         const cell = gameBoard.getCell(row, col);
 
         console.log(`Placing ${getActivePlayer().name}'s marker into cell ${row},${col} `);
-
         gameBoard.addMarker(cell, getActivePlayer().marker);
-
         switchActivePlayer();
         printNewRound();
     }
@@ -39,7 +37,7 @@ const GameController = (function () {
     return {
         playRound,
         getActivePlayer,
-        getBoard
+        getGameBoard
     }
 });
 

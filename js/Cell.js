@@ -1,6 +1,6 @@
 const Cell = (function () {
 
-    let value = " ";
+    let value = null;
 
     const addMarker = (marker) => {
         value = marker;

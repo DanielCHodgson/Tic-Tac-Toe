@@ -27,8 +27,7 @@ const Gameboard = (function () {
     }
 
     const addMarker = (cell, marker) => {
-
-        if (cell.getValue() === " ") {
+        if (cell.getValue() === null) {
             cell.addMarker(marker);
         } else console.log("Squared already occupied!")
     }
@@ -37,7 +36,7 @@ const Gameboard = (function () {
         printBoard,
         getCell,
         getBoard,
-        addMarker
+        addMarker,
     };
 
 });
