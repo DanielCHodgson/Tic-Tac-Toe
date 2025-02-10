@@ -8,14 +8,11 @@ export default class Gameboard {
         this.boardArray = boardArray;
     }
 
-    resetBoard() {
-        for (let i = 0; i < this.rows; i++) {
-            this.board[i] = [];
-            for (let j = 0; j < this.cols; j++) {
-                this.boardArray[i].push(new Cell(null));
-            }
-        }
+    boardHasSpace() {
+        console.log("Checking boardHasSpace:", this.boardArray);
+        return this.boardArray.some(row => row.some(cell => cell.getValue() === null));
     }
+    
 
     getBoard() {
         return this.boardArray;

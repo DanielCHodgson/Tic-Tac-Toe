@@ -8,7 +8,7 @@ const GameController = (function () {
     const playerOne = new Player("playerOne", "O");
     const playerTwo = new Player("playerTwo", "X");
     const players = [playerOne, playerTwo];
-    let gameStates = [new GameState(1, gameBoard, playerOne, false)];
+    let gameStates = [new GameState(1, gameBoard, playerOne, "ongoing")];
 
     function getCurrentGameState() {
         return gameStates[gameStates.length - 1];
@@ -45,9 +45,15 @@ const GameController = (function () {
         newCurrentBoard.addMarker(row, col, activePlayer.marker);
 
         const gameWon = isGameWon(newBoardGrid, activePlayer);
-        const newActivePlayer = switchActivePlayer(activePlayer);
 
-        gameStates.push(new GameState(turn, newCurrentBoard, gameWon ? activePlayer : newActivePlayer, gameWon));
+        if (gameWon) {
+            gameStates.push(new GameState(turn, newCurrentBoard, activePlayer, "won"));
+        } else if (!newCurrentBoard.boardHasSpace()) {
+            gameStates.push(new GameState(turn, newCurrentBoard, activePlayer, "draw"));
+        } else {
+            const newActivePlayer = switchActivePlayer(activePlayer);
+            gameStates.push(new GameState(turn, newCurrentBoard, newActivePlayer, "ongoing"));
+        }
     }
 
     function isGameWon(board, player) {
@@ -56,14 +62,14 @@ const GameController = (function () {
 
         // Check rows and columns
         for (let i = 0; i < size; i++) {
-            if (board[i].every(cell => cell.getValue() === marker) || 
+            if (board[i].every(cell => cell.getValue() === marker) ||
                 board.map(row => row[i]).every(cell => cell.getValue() === marker)) {
                 return true;
             }
         }
 
         // Check diagonals
-        if (board.every((_, i) => board[i][i].getValue() === marker) || 
+        if (board.every((_, i) => board[i][i].getValue() === marker) ||
             board.every((_, i) => board[i][size - 1 - i].getValue() === marker)) {
             return true;
         }
@@ -73,7 +79,7 @@ const GameController = (function () {
 
     function reset() {
         gameBoard = new GameBoard(createInitialBoard());
-        gameStates = [new GameState(0, gameBoard, playerOne, false)];
+        gameStates = [new GameState(1, gameBoard, playerOne, "ongoing")];
     }
 
     function undoRound() {

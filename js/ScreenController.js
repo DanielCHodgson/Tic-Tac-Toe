@@ -13,13 +13,16 @@ const ScreenController = (gameController) => {
     renderTurnCounter();
     renderBoard();
 
-    if (currentState.isWon()) {
-      renderWinMessage(currentState.getActivePlayer());
+    console.log(currentState.getStatus())
+    if (currentState.getStatus() === "won") {
+      renderMessage(`${currentState.getActivePlayer().name} won!`);
+    } else if (currentState.getStatus() === "draw") {
+      renderMessage("It's a draw!");
     }
   }
 
-  function renderWinMessage(player) {
-    headerText.textContent = `${player.name} won!`;
+  function renderMessage(message) {
+    headerText.textContent = message;
   }
 
   function renderTurnCounter() {
@@ -59,7 +62,8 @@ const ScreenController = (gameController) => {
   }
 
   function handleBoardClick(event) {
-    if (!currentState.isWon()) {
+    console.log(currentState.getStatus())
+    if (currentState.getStatus() === "ongoing") {
       const selectedCell = event.target.dataset.cell;
       if (!selectedCell) return;
 
@@ -89,8 +93,7 @@ const ScreenController = (gameController) => {
   updateScreen();
 
   return {
-    updateScreen,
-    renderWinMessage,
+    updateScreen
   };
 };
 
