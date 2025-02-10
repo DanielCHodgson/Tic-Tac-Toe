@@ -1,17 +1,20 @@
-const Cell = (function (value) {
+export default class Cell {
 
-    const addMarker = (marker) => {
-        value = marker;
+    constructor(marker) {
+        this.value = marker
     }
 
-    const getValue = () => value;
-    const isOccupied = () => value !== null;
-
-    return {
-        addMarker,
-        getValue,
-        isOccupied
+    addMarker(marker) {
+        this.value = marker;
     }
-});
 
-export default Cell;
+    getValue() {
+        return this.value;
+    }
+
+    isOccupied() {
+        return this.value !== null;
+    }
+
+}
+

@@ -1,5 +1,6 @@
 import Gameboard from "./GameBoard.js";
 import Cell from "./Cell.js";
+import Player from "./Player.js";
 
 const GameController = (function () {
 
@@ -8,8 +9,8 @@ const GameController = (function () {
 
     let boardStates = [];
 
-    const playerOne = { name: "playerOne", marker: "O" };
-    const playerTwo = { name: "playerTwo", marker: "X" };
+    const playerOne = new Player("playerOne", "O")
+    const playerTwo = new Player("playerTwo", "X")
     const players = [playerOne, playerTwo];
     let activePlayer = players[0];
     let winningPlayer = null;
@@ -25,19 +26,22 @@ const GameController = (function () {
 
     const playRound = (cell) => {
 
-        const activePlayer = getActivePlayer();
+        const currentPlayer = getActivePlayer();
+
         if (!cell.isOccupied()) {
 
-            const boardCopy = board.map(row => row.map(cell => Cell(cell.getValue())));
+            const boardCopy = board.map(row => row.map(cell => new Cell(cell.getValue())));
             boardStates.push(boardCopy);
-            gameBoard.addMarker(cell, activePlayer.marker);
+            gameBoard.addMarker(cell, currentPlayer.marker);
 
             if (isGameWon(activePlayer)) {
                 winningPlayer = activePlayer;
                 return;
             }
             switchActivePlayer();
-        } else alert("Square occupied, choose another!")
+        } else {
+            alert("Square occupied, choose another!")
+        }
     }
 
     function isGameWon(player) {

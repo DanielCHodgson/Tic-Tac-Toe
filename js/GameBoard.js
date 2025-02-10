@@ -11,7 +11,7 @@ export default class Gameboard {
         for (let i = 0; i < this.rows; i++) {
             this.board[i] = [];
             for (let j = 0; j < this.cols; j++) {
-                this.board[i].push(Cell(null));
+                this.board[i].push(new Cell(null));
             }
         }
     }
