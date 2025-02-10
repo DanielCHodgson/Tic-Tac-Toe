@@ -39,8 +39,6 @@ const GameController = (function () {
 
     const playRound = (cell, currentState) => {
 
-
-
         if (!cell.isOccupied()) {
 
             const turn = currentState.getTurn() + 1;
@@ -48,12 +46,13 @@ const GameController = (function () {
             const currentBoard = currentState.getGameBoard();
             currentBoard.addMarker(cell, currentPlayer.marker);
 
+            let newActivePlayer = turn === 0 ? players[0] : switchActivePlayer(currentPlayer);
+
             if (isGameWon(currentBoard.getBoard(), currentPlayer)) {
-                gameStates.push(new GameState(turn, currentBoard, activePlayer, true));
+                gameStates.push(new GameState(turn, currentBoard, currentPlayer, true));
                 return;
             }
 
-            let newActivePlayer = turn === 0 ? players[0] : switchActivePlayer(currentPlayer);
             gameStates.push(new GameState(turn, currentBoard, newActivePlayer, false));
 
         } else {
