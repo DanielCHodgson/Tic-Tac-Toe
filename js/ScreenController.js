@@ -5,31 +5,37 @@ const ScreenController = (function (gameController) {
   const headerText = document.querySelector('.turn');
   const boardDiv = document.querySelector('.board');
   const undoBtn = document.querySelector('.undo');
-  const resetBtn = document.querySelector('.reset');
-  const gameBoard = gameController.getGameBoard();
+  //const resetBtn = document.querySelector('.reset');
+  //const gameBoard = gameController.getGameBoard();
   const utility = Utility();
+  let currentState = gameController.getCurrentGameState();
+
+  console.log(currentState)
 
   const updateScreen = () => {
 
     setTurnName();
     updateBoardGrid();
 
-    if (gameController.getWinningPlayer() != null) {
-      displayWin(gameController.getWinningPlayer());
+    if (currentState.isWon()) {
+      displayWin(currentState.getActivePlayer());
     }
   }
 
 
   function setTurnName() {
     boardDiv.textContent = "";
-    const activePlayer = gameController.getActivePlayer();
-    headerText.textContent = `${activePlayer.name}'s turn...`
+    const activePlayer = currentState.getActivePlayer();
+    headerText.textContent = `${activePlayer.getName()}'s turn...`
   }
 
 
   function updateBoardGrid() {
 
-    const board = gameBoard.getBoard();
+    console.log(currentState.getGameBoard())
+    const board = currentState.getGameBoard().getBoard();
+
+
 
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board.length; j++) {
@@ -63,10 +69,16 @@ const ScreenController = (function (gameController) {
   }
 
   function handleBoardClick(event) {
+
+    const gameBoard = currentState.getGameBoard();
+    const board = gameBoard.getBoard();
+
     const selectedCell = event.target.dataset.cell;
-    if (!selectedCell)
+    if (!selectedCell) {
       return;
-    const point = utility.indexToTwoD(selectedCell, gameBoard.getBoard().length);
+    }
+
+    const point = utility.indexToTwoD(selectedCell, board.length);
     const cell = gameBoard.getCell(point[0], point[1]);
     gameController.playRound(cell, this);
     updateScreen();
@@ -76,7 +88,7 @@ const ScreenController = (function (gameController) {
     gameController.undoRound();
     updateScreen();
   }
-  
+
   function handleResetClick() {
     gameController.reset();
     updateScreen();
@@ -85,7 +97,7 @@ const ScreenController = (function (gameController) {
   function bindEvents() {
     boardDiv.addEventListener("click", handleBoardClick);
     undoBtn.addEventListener("click", handleUndoClick);
-
+    //resetBtn.addEventListener("click", handleResetClick);
   }
 
   bindEvents()

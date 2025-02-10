@@ -2,12 +2,13 @@ import Cell from "./Cell.js";
 
 export default class Gameboard {
 
-    constructor (size) {
+    constructor(board) {
+        this.cols = board.length;
+        this.rows = board.length;
+        this.board = board;
+    }
 
-        this.cols = size;
-        this.rows = size;
-        this.board = [];
-
+    resetBoard() {
         for (let i = 0; i < this.rows; i++) {
             this.board[i] = [];
             for (let j = 0; j < this.cols; j++) {
@@ -18,12 +19,12 @@ export default class Gameboard {
 
     getBoard() {
         return this.board;
-    } 
-    setBoard (newBoard) {
+    }
+    setBoard(newBoard) {
         this.board = newBoard;
     }
 
-    printBoard(board)  {
+    printBoard(board) {
         const boardWithCells = board.map(row => row.map(cell => cell.getValue()));
         console.log(boardWithCells);
     }
