@@ -1,3 +1,4 @@
+import GameController from "./GameController.js";
 import Utility from "./Utility.js"
 
 const ScreenController = (function (gameController) {
@@ -6,7 +7,7 @@ const ScreenController = (function (gameController) {
   const headerText = document.querySelector('.turn');
   const boardDiv = document.querySelector('.board');
   const undoBtn = document.querySelector('.undo');
-  //const resetBtn = document.querySelector('.reset');
+  const resetBtn = document.querySelector('.reset');
   let currentState = null;
 
   const updateScreen = () => {
@@ -65,15 +66,19 @@ const ScreenController = (function (gameController) {
   function handleBoardClick(event) {
 
     const gameBoard = currentState.getGameBoard();
-    const board = gameBoard.getBoard();
 
-    const selectedCell = event.target.dataset.cell;
-    if (!selectedCell) return;
- 
-    const point = utility.indexToTwoD(selectedCell, board.length);
-    const cell = gameBoard.getCell(point[0], point[1]);
-    gameController.playRound(cell, currentState);
-    updateScreen();
+    if (!currentState.isWon()) {
+
+      const board = gameBoard.getBoard();
+
+      const selectedCell = event.target.dataset.cell;
+      if (!selectedCell) return;
+
+      const point = utility.indexToTwoD(selectedCell, board.length);
+      const cell = gameBoard.getCell(point[0], point[1]);
+      gameController.playRound(cell, currentState);
+      updateScreen();
+    }
   }
 
   function handleUndoClick() {
@@ -89,7 +94,7 @@ const ScreenController = (function (gameController) {
   function bindEvents() {
     boardDiv.addEventListener("click", handleBoardClick);
     undoBtn.addEventListener("click", handleUndoClick);
-    //resetBtn.addEventListener("click", handleResetClick);
+    resetBtn.addEventListener("click", handleResetClick);
   }
 
   bindEvents()

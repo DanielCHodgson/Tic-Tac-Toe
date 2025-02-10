@@ -5,19 +5,15 @@ import GameState from "./GameState.js";
 
 const GameController = (function () {
 
-    const gameBoard = new GameBoard(createInitialBoard());
-    const playerOne = new Player("playerOne", "O")
-    const playerTwo = new Player("playerTwo", "X")
+    let gameBoard = new GameBoard(createInitialBoard());
+    const playerOne = new Player("playerOne", "O");
+    const playerTwo = new Player("playerTwo", "X");
     const players = [playerOne, playerTwo];
-    let activePlayer = players[0];
-    let winningPlayer = null;
     let gameStates = [new GameState(0, gameBoard, playerOne, false)];
-
-    const getWinningPlayer = () => winningPlayer;
 
     function getCurrentGameState() { return gameStates[gameStates.length - 1]; };
 
-    console.log(getCurrentGameState())
+    console.log(getCurrentGameState());
 
     function createInitialBoard() {
         const board = [];
@@ -58,6 +54,8 @@ const GameController = (function () {
         } else {
             alert("Square occupied, choose another!")
         }
+
+        console.log(getCurrentGameState())
     }
 
     function isGameWon(board, player) {
@@ -78,11 +76,8 @@ const GameController = (function () {
     }
 
     function reset() {
-        gameStates = [];
-        gameBoard.resetBoard();
-        board = gameBoard.getBoard();
-        winningPlayer = null;
-        activePlayer = playerOne;
+        gameBoard = new GameBoard(createInitialBoard());
+        gameStates = [new GameState(0, gameBoard, playerOne, false)];
     }
 
     function undoRound() {
@@ -98,11 +93,10 @@ const GameController = (function () {
     }
 
     return {
+        getCurrentGameState,
         playRound,
         undoRound,
         reset,
-        getWinningPlayer,
-        getCurrentGameState
     }
 })();
 

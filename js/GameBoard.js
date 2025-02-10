@@ -34,7 +34,6 @@ export default class Gameboard {
     }
 
     addMarker = (cell, marker) => {
-        console.log("gkfdsg")
         cell.addMarker(marker);
     }
 }
