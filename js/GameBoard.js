@@ -33,8 +33,8 @@ export default class Gameboard {
         return this.boardArray[row][col];
     }
 
-    addMarker = (cell, marker) => {
-        cell.addMarker(marker);
+    addMarker = (row, col, marker) => {
+        this.boardArray[row][col] = new Cell(marker);
     }
 }
 

@@ -1,4 +1,3 @@
-import GameController from "./GameController.js";
 import Utility from "./Utility.js"
 
 const ScreenController = (function (gameController) {
@@ -65,20 +64,17 @@ const ScreenController = (function (gameController) {
 
 
   function handleBoardClick(event) {
+    if (!currentState.isWon()) {
+      const gameBoard = currentState.getGameBoard();
+      const board = gameBoard.getBoard();
+      const selectedCell = event.target.dataset.cell;
+      if (!selectedCell) return;
 
-    const gameBoard = currentState.getGameBoard();
-
-    if(!currentState.isWon()) {
-
-    const board = gameBoard.getBoard();
-
-    const selectedCell = event.target.dataset.cell;
-    if (!selectedCell) return;
- 
-    const point = utility.indexToTwoD(selectedCell, board.length);
-    const cell = gameBoard.getCell(point[0], point[1]);
-    gameController.playRound(cell, currentState);
-    updateScreen();
+      const twoD = utility.indexToTwoD(selectedCell, board.length);
+      gameController.playRound(twoD.row, twoD.col, currentState);
+      currentState = gameController.getCurrentGameState();
+      console.log(currentState)
+      updateScreen();
     }
   }
 

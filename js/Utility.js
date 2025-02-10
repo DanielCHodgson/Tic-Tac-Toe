@@ -5,9 +5,10 @@ const Utility = (function () {
     }
 
     function indexToTwoD(index, width) {
-        let row = Math.floor(index / width);
-        let col = index % width;
-        return [row, col];
+        const row = Math.floor(index / width);
+        const col = index % width;
+        const point = {row, col}
+        return point;
     }
 
     return {
