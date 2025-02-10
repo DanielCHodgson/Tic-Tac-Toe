@@ -9,11 +9,9 @@ const GameController = (function () {
     const playerOne = new Player("playerOne", "O");
     const playerTwo = new Player("playerTwo", "X");
     const players = [playerOne, playerTwo];
-    let gameStates = [new GameState(0, gameBoard, playerOne, false)];
+    let gameStates = [new GameState(1, gameBoard, playerOne, false)];
 
     function getCurrentGameState() { return gameStates[gameStates.length - 1]; };
-
-    console.log(getCurrentGameState());
 
     function createInitialBoard() {
         const board = [];
@@ -26,9 +24,20 @@ const GameController = (function () {
         return board;
     }
 
+    function cloneBoardGrid(grid) {
+        const newGrid = [];
+        for (let i = 0; i < grid.length; i++) {
+            newGrid[i] = [];
+            for (let j = 0; j < grid[i].length; j++) {
+                newGrid[i].push(new Cell(grid[i][j].getValue()));
+            }
+        }
+        return newGrid;
+    }
 
-    const switchActivePlayer = (currentPlayer) => {
-        let newPlayer = currentPlayer.getMarker() === players[0].getMarker() ? players[1] : players[0];
+
+    const switchActivePlayer = (playingPlayer) => {
+        let newPlayer = playingPlayer.getMarker() === players[0].getMarker() ? players[1] : players[0];
         return newPlayer;
     };
 
@@ -37,25 +46,36 @@ const GameController = (function () {
 
         if (!cell.isOccupied()) {
 
+
+            console.log("last round:");
+            console.log(currentState);
+
             const turn = currentState.getTurn() + 1;
-            const currentPlayer = currentState.getActivePlayer();
+            const playingPlayer = currentState.getActivePlayer();
             const currentBoard = currentState.getGameBoard();
-            currentBoard.addMarker(cell, currentPlayer.marker);
 
-            let newActivePlayer = turn === 0 ? players[0] : switchActivePlayer(currentPlayer);
+            
+            currentBoard.addMarker(cell, playingPlayer.marker);
+            const newCurrentBoard = new GameBoard(cloneBoardGrid(currentBoard.getBoard()));
 
-            if (isGameWon(currentBoard.getBoard(), currentPlayer)) {
-                gameStates.push(new GameState(turn, currentBoard, currentPlayer, true));
+            let newActivePlayer = turn === 0 ? players[0] : switchActivePlayer(playingPlayer);
+
+        
+            if (isGameWon(currentBoard.getBoard(), playingPlayer)) {
+                gameStates.push(new GameState(turn, newCurrentBoard, playingPlayer, true));
                 return;
             }
 
-            gameStates.push(new GameState(turn, currentBoard, newActivePlayer, false));
+            gameStates.push(new GameState(turn, newCurrentBoard, newActivePlayer, false));
+
+
+            console.log("new round:");
+            console.log(getCurrentGameState());
 
         } else {
             alert("Square occupied, choose another!")
         }
-
-        console.log(getCurrentGameState())
+        
     }
 
     function isGameWon(board, player) {
@@ -78,17 +98,14 @@ const GameController = (function () {
     function reset() {
         gameBoard = new GameBoard(createInitialBoard());
         gameStates = [new GameState(0, gameBoard, playerOne, false)];
+
     }
 
     function undoRound() {
-
-        if (gameStates.length > 0) {
-
-            gameStates.forEach(b => gameBoard.printBoard(b))
-
-            const prevBoard = gameStates.pop();
-            gameBoard.setBoard(prevBoard);
-            switchActivePlayer();
+        if (gameStates.length > 1) {  
+            const lastRound = gameStates.pop();  
+            console.log("lastRound:");
+            console.log(lastRound);
         }
     }
 

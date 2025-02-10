@@ -28,8 +28,9 @@ const ScreenController = (function (gameController) {
 
   function setTurnName(currentState) {
     boardDiv.textContent = "";
+    const turnNum = currentState.getTurn();
     const activePlayer = currentState.getActivePlayer();
-    headerText.textContent = `${activePlayer.getName()}'s turn...`
+    headerText.textContent = `Turn:${turnNum} ${activePlayer.getName()}'s turn...`
   }
 
   function updateBoardGrid(currentState) {
@@ -67,17 +68,17 @@ const ScreenController = (function (gameController) {
 
     const gameBoard = currentState.getGameBoard();
 
-    if (!currentState.isWon()) {
+    if(!currentState.isWon()) {
 
-      const board = gameBoard.getBoard();
+    const board = gameBoard.getBoard();
 
-      const selectedCell = event.target.dataset.cell;
-      if (!selectedCell) return;
-
-      const point = utility.indexToTwoD(selectedCell, board.length);
-      const cell = gameBoard.getCell(point[0], point[1]);
-      gameController.playRound(cell, currentState);
-      updateScreen();
+    const selectedCell = event.target.dataset.cell;
+    if (!selectedCell) return;
+ 
+    const point = utility.indexToTwoD(selectedCell, board.length);
+    const cell = gameBoard.getCell(point[0], point[1]);
+    gameController.playRound(cell, currentState);
+    updateScreen();
     }
   }
 
