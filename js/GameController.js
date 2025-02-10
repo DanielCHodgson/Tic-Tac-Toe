@@ -3,7 +3,7 @@ import Cell from "./Cell.js";
 
 const GameController = (function () {
 
-    const gameBoard = Gameboard;
+    const gameBoard = new Gameboard(3);
     const board = gameBoard.getBoard();
 
     let boardStates = [];
