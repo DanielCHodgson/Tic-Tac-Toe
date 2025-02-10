@@ -1,7 +1,6 @@
-import Utility from "./Utility.js"
+import Utility from "./Utility.js";
 
-const ScreenController = (function (gameController) {
-
+const ScreenController = (gameController) => {
   const utility = Utility();
   const headerText = document.querySelector('.turn');
   const boardDiv = document.querySelector('.board');
@@ -9,32 +8,30 @@ const ScreenController = (function (gameController) {
   const resetBtn = document.querySelector('.reset');
   let currentState = null;
 
-  const updateScreen = () => {
-
+  function updateScreen() {
     currentState = gameController.getCurrentGameState();
-
-    setTurnName(currentState);
-    updateBoardGrid(currentState);
+    renderTurnCounter();
+    renderBoard();
 
     if (currentState.isWon()) {
-      displayWin(currentState.getActivePlayer());
+      renderWinMessage(currentState.getActivePlayer());
     }
   }
 
-  function displayWin(player) {
-    headerText.textContent = `${player.name} won!`
+  function renderWinMessage(player) {
+    headerText.textContent = `${player.name} won!`;
   }
 
-  function setTurnName(currentState) {
-    boardDiv.textContent = "";
+  function renderTurnCounter() {
     const turnNum = currentState.getTurn();
     const activePlayer = currentState.getActivePlayer();
-    headerText.textContent = `Turn:${turnNum} ${activePlayer.getName()}'s turn...`
+    headerText.textContent = `Turn: ${turnNum} ${activePlayer.getName()}'s turn...`;
   }
 
-  function updateBoardGrid(currentState) {
-
+  function renderBoard() {
+    boardDiv.textContent = ""; // Clear previous board
     const board = currentState.getGameBoard().getBoard();
+    const fragment = document.createDocumentFragment(); // Optimize DOM updates
 
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board.length; j++) {
@@ -43,17 +40,16 @@ const ScreenController = (function (gameController) {
         cellButton.classList.add("cell");
         cellButton.dataset.cell = utility.twoDToIndex(i, j, board.length);
         cellButton.appendChild(getCellIcon(cell.getValue()));
-        boardDiv.appendChild(cellButton);
+        fragment.appendChild(cellButton);
       }
     }
+
+    boardDiv.appendChild(fragment); // Batch DOM update
   }
 
   function getCellIcon(cellValue) {
-
     const tempDiv = document.createElement('div');
-
-    if (cellValue === null)
-      return tempDiv;
+    if (cellValue === null) return tempDiv;
 
     tempDiv.innerHTML = (cellValue === "O") ?
       `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>alpha-o</title><path d="M11,7A2,2 0 0,0 9,9V15A2,2 0 0,0 11,17H13A2,2 0 0,0 15,15V9A2,2 0 0,0 13,7H11M11,9H13V15H11V9Z" /></svg>` :
@@ -62,18 +58,13 @@ const ScreenController = (function (gameController) {
     return tempDiv.firstChild;
   }
 
-
   function handleBoardClick(event) {
     if (!currentState.isWon()) {
-      const gameBoard = currentState.getGameBoard();
-      const board = gameBoard.getBoard();
       const selectedCell = event.target.dataset.cell;
       if (!selectedCell) return;
 
-      const twoD = utility.indexToTwoD(selectedCell, board.length);
-      gameController.playRound(twoD.row, twoD.col, currentState);
-      currentState = gameController.getCurrentGameState();
-      console.log(currentState)
+      const { row, col } = utility.indexToTwoD(selectedCell, currentState.getGameBoard().getBoard().length);
+      gameController.playRound(row, col);
       updateScreen();
     }
   }
@@ -94,13 +85,13 @@ const ScreenController = (function (gameController) {
     resetBtn.addEventListener("click", handleResetClick);
   }
 
-  bindEvents()
+  bindEvents();
   updateScreen();
 
   return {
     updateScreen,
-    displayWin
-  }
-});
+    renderWinMessage,
+  };
+};
 
 export default ScreenController;
