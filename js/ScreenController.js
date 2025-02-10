@@ -3,6 +3,7 @@ import Utility from "./Utility.js";
 const ScreenController = (gameController) => {
   const utility = Utility();
   const headerText = document.querySelector('.turn');
+  const playerText = document.querySelector('.player');
   const boardDiv = document.querySelector('.board');
   const undoBtn = document.querySelector('.undo');
   const resetBtn = document.querySelector('.reset');
@@ -28,7 +29,8 @@ const ScreenController = (gameController) => {
   function renderTurnCounter() {
     const turnNum = currentState.getTurn();
     const activePlayer = currentState.getActivePlayer();
-    headerText.textContent = `Turn: ${turnNum} ${activePlayer.getName()}'s turn...`;
+    playerText.textContent =`Turn: ${turnNum}`;
+    headerText.textContent = `${activePlayer.getName()}'s turn...`;
   }
 
   function renderBoard() {
