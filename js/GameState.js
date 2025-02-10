@@ -3,12 +3,14 @@ export default class GameState {
     #gameBoard;
     #activePlayer;
     #isWon;
+    #turn;
 
 
-    constructor(gameBoard, activePlayer, isWon) {
+    constructor(turn, gameBoard, activePlayer, isWon) {
+        this.#turn = turn;
+        this.#gameBoard = gameBoard;
         this.#activePlayer = activePlayer;
         this.#isWon = isWon;
-        this.#gameBoard = gameBoard;
     }
 
     getGameBoard() {
@@ -23,4 +25,7 @@ export default class GameState {
         return this.#isWon;
     }
 
+    getTurn() {
+        return this.#turn;
+    }
 }

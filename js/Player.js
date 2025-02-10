@@ -9,7 +9,7 @@ export default class Player {
         return this.name;
     }
 
-    getMarkey() {
+    getMarker() {
         return this.marker;
     }
 

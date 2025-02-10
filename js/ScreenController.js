@@ -2,40 +2,38 @@ import Utility from "./Utility.js"
 
 const ScreenController = (function (gameController) {
 
+  const utility = Utility();
   const headerText = document.querySelector('.turn');
   const boardDiv = document.querySelector('.board');
   const undoBtn = document.querySelector('.undo');
   //const resetBtn = document.querySelector('.reset');
-  //const gameBoard = gameController.getGameBoard();
-  const utility = Utility();
-  let currentState = gameController.getCurrentGameState();
-
-  console.log(currentState)
+  let currentState = null;
 
   const updateScreen = () => {
 
-    setTurnName();
-    updateBoardGrid();
+    currentState = gameController.getCurrentGameState();
+
+    setTurnName(currentState);
+    updateBoardGrid(currentState);
 
     if (currentState.isWon()) {
       displayWin(currentState.getActivePlayer());
     }
   }
 
+  function displayWin(player) {
+    headerText.textContent = `${player.name} won!`
+  }
 
-  function setTurnName() {
+  function setTurnName(currentState) {
     boardDiv.textContent = "";
     const activePlayer = currentState.getActivePlayer();
     headerText.textContent = `${activePlayer.getName()}'s turn...`
   }
 
+  function updateBoardGrid(currentState) {
 
-  function updateBoardGrid() {
-
-    console.log(currentState.getGameBoard())
     const board = currentState.getGameBoard().getBoard();
-
-
 
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board.length; j++) {
@@ -43,14 +41,13 @@ const ScreenController = (function (gameController) {
         const cellButton = document.createElement("button");
         cellButton.classList.add("cell");
         cellButton.dataset.cell = utility.twoDToIndex(i, j, board.length);
-
-        cellButton.appendChild(activePlayerIcon(cell.getValue()));
+        cellButton.appendChild(getCellIcon(cell.getValue()));
         boardDiv.appendChild(cellButton);
       }
     }
   }
 
-  function activePlayerIcon(cellValue) {
+  function getCellIcon(cellValue) {
 
     const tempDiv = document.createElement('div');
 
@@ -64,9 +61,6 @@ const ScreenController = (function (gameController) {
     return tempDiv.firstChild;
   }
 
-  function displayWin(player) {
-    headerText.textContent = `${player.name} won!`
-  }
 
   function handleBoardClick(event) {
 
@@ -74,13 +68,11 @@ const ScreenController = (function (gameController) {
     const board = gameBoard.getBoard();
 
     const selectedCell = event.target.dataset.cell;
-    if (!selectedCell) {
-      return;
-    }
-
+    if (!selectedCell) return;
+ 
     const point = utility.indexToTwoD(selectedCell, board.length);
     const cell = gameBoard.getCell(point[0], point[1]);
-    gameController.playRound(cell, this);
+    gameController.playRound(cell, currentState);
     updateScreen();
   }
 

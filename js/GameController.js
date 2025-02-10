@@ -5,7 +5,21 @@ import GameState from "./GameState.js";
 
 const GameController = (function () {
 
-    const createInitialBoard = () => {
+    const gameBoard = new GameBoard(createInitialBoard());
+    const playerOne = new Player("playerOne", "O")
+    const playerTwo = new Player("playerTwo", "X")
+    const players = [playerOne, playerTwo];
+    let activePlayer = players[0];
+    let winningPlayer = null;
+    let gameStates = [new GameState(0, gameBoard, playerOne, false)];
+
+    const getWinningPlayer = () => winningPlayer;
+
+    function getCurrentGameState() { return gameStates[gameStates.length - 1]; };
+
+    console.log(getCurrentGameState())
+
+    function createInitialBoard() {
         const board = [];
         for (let i = 0; i < 3; i++) {
             board[i] = [];
@@ -16,53 +30,39 @@ const GameController = (function () {
         return board;
     }
 
-    const gameBoard = new GameBoard(createInitialBoard());
-    //const board = gameBoard.getBoard();
-    const playerOne = new Player("playerOne", "O")
-    const playerTwo = new Player("playerTwo", "X")
-    const players = [playerOne, playerTwo];
-    let activePlayer = players[0];
-    let winningPlayer = null;
-
-    let gameStates = [new GameState(gameBoard, playerOne, false)];
-    let currentState = gameStates[gameStates.length - 1];
-
-
-    //const getActivePlayer = () => currentState.getActivePlayer;
-    //const getPlayers = () => players;
-    //const getGameBoard = () => gameBoard;
-    const getWinningPlayer = () => winningPlayer;
-    const getCurrentGameState = () => currentState;
 
     const switchActivePlayer = (currentPlayer) => {
-       return currentPlayer === players[0] ? players[1] : players[0];
+        let newPlayer = currentPlayer.getMarker() === players[0].getMarker() ? players[1] : players[0];
+        return newPlayer;
     };
 
 
-    const playRound = (cell) => {
+    const playRound = (cell, currentState) => {
+
+
+
         if (!cell.isOccupied()) {
 
-            const currentBoard = currentState.getGameBoard().getBoard();
+            const turn = currentState.getTurn() + 1;
             const currentPlayer = currentState.getActivePlayer();
+            const currentBoard = currentState.getGameBoard();
+            currentBoard.addMarker(cell, currentPlayer.marker);
 
-            const newBoard = new GameBoard(currentBoard.map(row => row.map(cell => new Cell(cell.getValue()))));
-            newBoard.addMarker(cell, currentPlayer.marker);
-           
-            if (isGameWon(newBoard.getBoard(), currentPlayer)) {
-                winningPlayer = activePlayer;
-                gameStates.push(newBoard, null, true);
+            if (isGameWon(currentBoard.getBoard(), currentPlayer)) {
+                gameStates.push(new GameState(turn, currentBoard, activePlayer, true));
                 return;
             }
 
-            console.log(switchActivePlayer());
-            gameStates.push(newBoard, switchActivePlayer(), false);
+            let newActivePlayer = turn === 0 ? players[0] : switchActivePlayer(currentPlayer);
+            gameStates.push(new GameState(turn, currentBoard, newActivePlayer, false));
+
         } else {
             alert("Square occupied, choose another!")
         }
     }
 
     function isGameWon(board, player) {
-        let size = board.length;
+        const size = board.length;
 
         for (let i = 0; i < size; i++) {
             if (board[i].every(cell => cell.getValue() === player.marker) ||
@@ -102,9 +102,6 @@ const GameController = (function () {
         playRound,
         undoRound,
         reset,
-        //getActivePlayer,
-        //getPlayers,
-        //getGameBoard,
         getWinningPlayer,
         getCurrentGameState
     }
