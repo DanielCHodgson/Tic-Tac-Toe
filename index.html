@@ -12,7 +12,7 @@
 
 <body>
     <div class="app-wrapper">
-        <div class="container">
+        <div class="game-container">
             <h1 class="player"></h1>
             <h2 class="turn"></h2>
             <div class="board-wrapper">
@@ -23,7 +23,22 @@
                 <button class="reset">Reset</button>
             </div>
         </div>
-    </div>
+        <div class="input">
+            <div class="wrapper">
+                <h2>Tic Tac Toe</h2>
+                <form class="interface" id="choose-names">
+                    <form-group>
+                        <label for="player-one-name">Player one name:</label>
+                        <input type="text" id="player-one-name" maxlength="15" placeholder="playerOne">
+                    </form-group>
+                    <form-group>
+                        <label for="player-two-name">Player two name:</label>
+                        <input type="text" id="player-two-name" maxlength="15" placeholder="playerTwo">
+                    </form-group>
+                    <button class="interface" id="play-btn" type="submit">Play!</button>
+                </form>
+            </div>
+        </div>
     </div>
 </body>
 

@@ -1,34 +1,45 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
+:root {
+
+  --white-text: #FFFFFF;
+
+  --primary-light: #344955;
+  --primary-dark: #35374B;
+  --secondary: #78A083;
+}
+
 .app-wrapper {
   width: 100%;
   height: 100%;
-  background-color: #344955;
+  background-color: var(--primary-light);
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
-.app-wrapper h1 {
-  font-family: "Press Start 2P", serif;
-  font-size: 2.5rem;
-  color: #78A083;
-  text-align: center;
-}
-
-.app-wrapper h2 {
-  font-family: "Press Start 2P", serif;
-  font-size: 2rem;
-  color: #78A083;
-  text-align: center;
-}
-
-.container {
+.game-container {
   display: grid;
   grid-template-rows: auto 1fr auto;
   place-items: center;
   margin-bottom: 5rem;
   gap: 1rem;
+  display: none;
+}
+
+
+.game-container h1 {
+  font-family: "Press Start 2P", serif;
+  font-size: 2.5rem;
+  color: var(--white-text);
+  text-align: center;
+}
+
+.game-container h2 {
+  font-family: "Press Start 2P", serif;
+  font-size: 2rem;
+  color: var(--white-text);
 }
 
 .board-wrapper {
@@ -63,7 +74,7 @@
   align-items: center;
   text-align: center;
   font-size: 2rem;
-  background-color: #35374B;
+  background-color: var(--primary-dark);
   cursor: pointer;
   border: none;
   outline: none;
@@ -79,20 +90,16 @@
 .interface button {
   width: 10rem;
   height: 5rem;
-
   font-family: "Press Start 2P", serif;
   font-size: 1.7rem;
   text-align: center;
-
-  background-color: #78A083;
-  color: #35374B;
-
+  background-color: var(--secondary);
+  color: var(--white-text);
   border-radius: 10px;
   border: none;
   outline: none;
   cursor: pointer;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-
 }
 
 .interface button:hover {
@@ -127,4 +134,67 @@
 
 [data-cell="8"] {
   border-radius: 0 0 10px 0;
+}
+
+
+.input {
+  width: clamp(200px, 600px, 80%);
+  height: 400px;
+  background-color: var(--secondary);
+  font-family: "Press Start 2P", serif;
+  color: var(--white-text);
+  position: absolute;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2);
+}
+
+#choose-names {
+  width: auto;
+  height: calc(100% - 4rem);
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  place-items: center;
+  place-self: center;
+  gap: 1rem;
+}
+
+.input .wrapper {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.input h2 {
+  padding-top: 2rem;
+  font-family: "Press Start 2P", serif;
+  font-size: 2.2rem;
+  color: var(--white-text);
+  text-align: center;
+}
+
+#choose-names form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+#choose-names input {
+  border: none;
+  outline: none;
+  height: 2.5rem;
+  width: 90%;
+  border-radius: 5px;
+  padding: 0.5rem;
+}
+
+#play-btn {
+  width: 14rem;
+  height: 7rem;
+  font-size: 2.2rem;
+  background-color: var(--primary-dark);
+  grid-column: span 2;
+  display: flex;
+  align-items: center;
 }
